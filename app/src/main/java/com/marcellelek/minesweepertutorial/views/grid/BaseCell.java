@@ -1,7 +1,10 @@
 package com.marcellelek.minesweepertutorial.views.grid;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.marcellelek.minesweepertutorial.GameEngine;
 
@@ -15,6 +18,8 @@ public abstract class BaseCell extends View {
     private boolean isRevealed;
     private boolean isClicked;
     private boolean isFlagged;
+    private boolean isGold;
+    private Drawable[] goldstate;
 
     private int x , y;
     private int position;
@@ -35,9 +40,27 @@ public abstract class BaseCell extends View {
 
         if( value == -1 ){
             isBomb = true;
+        }else if(value ==-2) {
+            isGold=true;
         }
 
         this.value = value;
+    }
+
+    public Drawable[] getGoldstate() {
+        return goldstate;
+    }
+
+    public void setGoldstate(Drawable[] goldstate) {
+        this.goldstate = goldstate;
+    }
+
+    public boolean isGold() {
+        return isGold;
+    }
+
+    public void setGold(boolean gold) {
+        isGold = gold;
     }
 
     public boolean isBomb() {
@@ -62,10 +85,11 @@ public abstract class BaseCell extends View {
     }
 
     public void setClicked() {
-        this.isClicked = true;
-        this.isRevealed = true;
 
-        invalidate();
+            this.isClicked = true;
+            this.isRevealed = true;
+
+            invalidate();
     }
 
     public boolean isFlagged() {

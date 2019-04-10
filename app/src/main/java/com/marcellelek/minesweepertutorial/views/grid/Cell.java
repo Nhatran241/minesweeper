@@ -6,14 +6,18 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.marcellelek.minesweepertutorial.GameEngine;
 import com.marcellelek.minesweepertutorial.R;
+
+import java.util.Random;
 
 /**
  * Created by Marcell on 2016. 04. 14..
  */
 public class Cell extends BaseCell implements View.OnClickListener , View.OnLongClickListener{
+
 
     public Cell( Context context , int x , int y ){
         super(context);
@@ -31,7 +35,15 @@ public class Cell extends BaseCell implements View.OnClickListener , View.OnLong
 
     @Override
     public void onClick(View v) {
-        GameEngine.getInstance().click( getXPos(), getYPos() );
+        if(isGold()&&isRevealed()&&!isFlagged()){
+            Toast.makeText(getContext(), "ádasdasdasd", Toast.LENGTH_SHORT).show();
+            setValue(0);
+            setGold(false);
+            invalidate();
+        }
+        if(!isFlagged()) {
+            GameEngine.getInstance().click(getXPos(), getYPos());
+        }
     }
 
     @Override
@@ -45,7 +57,6 @@ public class Cell extends BaseCell implements View.OnClickListener , View.OnLong
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Log.d("Minesweeper" , "Cell::onDraw");
         drawButton(canvas);
 
         if( isFlagged() ){
@@ -60,10 +71,15 @@ public class Cell extends BaseCell implements View.OnClickListener , View.OnLong
                     drawNumber(canvas);
                 }
             }else{
-                drawButton(canvas);
+                if(isGold()&&isRevealed()){
+                    drawNumber(canvas);
+                }else {
+                    drawButton(canvas);
+                }
             }
         }
     }
+
 
     private void drawBombExploded(Canvas canvas ){
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.bomb_exploded);
@@ -88,41 +104,61 @@ public class Cell extends BaseCell implements View.OnClickListener , View.OnLong
         drawable.setBounds(0,0,getWidth(),getHeight());
         drawable.draw(canvas);
     }
+    private void drawGold(){
+        Drawable[] drawables = new Drawable[4];
+        drawables[0]=ContextCompat.getDrawable(getContext(), R.drawable.tile000);
+        drawables[1]=ContextCompat.getDrawable(getContext(), R.drawable.tile001);
+        drawables[2]=ContextCompat.getDrawable(getContext(), R.drawable.tile002);
+        drawables[3]=ContextCompat.getDrawable(getContext(), R.drawable.tile003);
+        drawables[4]=ContextCompat.getDrawable(getContext(), R.drawable.tile004);
+    }
 
     private void drawNumber( Canvas canvas ){
         Drawable drawable = null;
 
         switch (getValue() ){
+            case -2:
+                drawable = ContextCompat.getDrawable(getContext(), R.drawable.tile000);
+                drawable.setBounds(getWidth()*1/6,getHeight()*1/6,getWidth()*5/6,getHeight()*5/6);
+                break;
             case 0:
                 drawable = ContextCompat.getDrawable(getContext(), R.drawable.number_0);
+                drawable.setBounds(0,0,getWidth(),getHeight());
                 break;
             case 1:
                 drawable = ContextCompat.getDrawable(getContext(), R.drawable.number_1);
+                drawable.setBounds(0,0,getWidth(),getHeight());
                 break;
             case 2:
                 drawable = ContextCompat.getDrawable(getContext(), R.drawable.number_2);
+                drawable.setBounds(0,0,getWidth(),getHeight());
                 break;
             case 3:
                 drawable = ContextCompat.getDrawable(getContext(), R.drawable.number_3);
+                drawable.setBounds(0,0,getWidth(),getHeight());
                 break;
             case 4:
                 drawable = ContextCompat.getDrawable(getContext(), R.drawable.number_4);
+                drawable.setBounds(0,0,getWidth(),getHeight());
                 break;
             case 5:
                 drawable = ContextCompat.getDrawable(getContext(), R.drawable.number_5);
+                drawable.setBounds(0,0,getWidth(),getHeight());
                 break;
             case 6:
                 drawable = ContextCompat.getDrawable(getContext(), R.drawable.number_6);
+                drawable.setBounds(0,0,getWidth(),getHeight());
                 break;
             case 7:
                 drawable = ContextCompat.getDrawable(getContext(), R.drawable.number_7);
+                drawable.setBounds(0,0,getWidth(),getHeight());
                 break;
             case 8:
                 drawable = ContextCompat.getDrawable(getContext(), R.drawable.number_8);
+                drawable.setBounds(0,0,getWidth(),getHeight());
                 break;
         }
 
-        drawable.setBounds(0,0,getWidth(),getHeight());
         drawable.draw(canvas);
     }
 

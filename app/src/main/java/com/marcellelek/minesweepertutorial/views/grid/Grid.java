@@ -27,7 +27,7 @@ public class Grid extends GridView{
     private void initRation(Context context) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int screen_width=metrics.widthPixels;
-        int screen_height=metrics.heightPixels;
+        int screen_height=metrics.heightPixels*13/14;
         if(screen_width < screen_height)
         {
             GameEngine.WIDTH=9;

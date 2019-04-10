@@ -1,5 +1,7 @@
 package com.marcellelek.minesweepertutorial.util;
 
+import android.util.Log;
+
 import java.util.Random;
 
 /**
@@ -16,25 +18,33 @@ public class Generator {
             grid[x] = new int[height];
         }
 
-        while( bombnumber > 0 ){
+        while( bombnumber > 0){
             int x = r.nextInt(width);
             int y = r.nextInt(height);
 
             // -1 is the bomb
             if( grid[x][y] != -1 ){
-                grid[x][y] = -1;
-                bombnumber--;
+
+                    grid[x][y] = -1;
+                    bombnumber--;
             }
         }
-        grid = calculateNeigbours(grid,width,height);
+        grid = calculateNeigbours(grid,width,height,r);
 
         return grid;
     }
 
-    private static int[][] calculateNeigbours( int[][] grid , final int width , final int height){
+    private static int[][] calculateNeigbours( int[][] grid , final int width , final int height,final Random r){
         for( int x = 0 ; x < width ; x++){
             for( int y = 0 ; y < height ; y++){
-                grid[x][y] = getNeighbourNumber(grid,x,y,width,height);
+                int num=getNeighbourNumber(grid,x,y,width,height);
+                if(num==0){
+                    if((r.nextInt(10 - 1 + 1) + 1)==1){
+                        grid[x][y] = -2;
+                    }
+                }else {
+                    grid[x][y] = getNeighbourNumber(grid, x, y, width, height);
+                }
             }
         }
 
