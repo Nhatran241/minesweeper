@@ -8,8 +8,7 @@
         android:background="#123"
         android:id="@+id/rl_top"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-    </RelativeLayout>
+        android:layout_height="50dp"/>
 
     <com.marcellelek.minesweepertutorial.views.grid.Grid
         android:layout_below="@id/rl_top"

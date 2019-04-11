@@ -67,21 +67,22 @@ public class GameEngine {
 
     public void click( int x , int y ){
         if( x >= 0 && y >= 0 && x < WIDTH && y < HEIGHT && !getCellAt(x,y).isClicked()) {
+            Log.d("aaaaaa",x+"|"+y);
                 getCellAt(x, y).setClicked();
-                if (getCellAt(x, y).getValue() == 0 ||getCellAt(x, y).getValue() == -2) {
+                if (getCellAt(x, y).getValue() == 0||getCellAt(x, y).getValue() == -2) {
                     for (int xt = -1; xt <= 1; xt++) {
                         for (int yt = -1; yt <= 1; yt++) {
-                            if (xt != yt) {
+//                            if (xt != yt) {
                                 click(x + xt, y + yt);
-                            }
+//                            }
                         }
+
                     }
                 }
-
-
                 if (getCellAt(x, y).isBomb()) {
                     onGameLost();
                 }
+        }else {
         }
         if(!isEnd) {
             checkEnd();

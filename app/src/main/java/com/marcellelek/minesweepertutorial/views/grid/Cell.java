@@ -112,6 +112,11 @@ public class Cell extends BaseCell implements View.OnClickListener , View.OnLong
         drawables[3]=ContextCompat.getDrawable(getContext(), R.drawable.tile003);
         drawables[4]=ContextCompat.getDrawable(getContext(), R.drawable.tile004);
     }
+    private void draw0(Canvas canvas){
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.number_0);
+        drawable.setBounds(0,0,getWidth(),getHeight());
+        drawable.draw(canvas);
+    }
 
     private void drawNumber( Canvas canvas ){
         Drawable drawable = null;
@@ -119,6 +124,7 @@ public class Cell extends BaseCell implements View.OnClickListener , View.OnLong
         switch (getValue() ){
             case -2:
                 drawable = ContextCompat.getDrawable(getContext(), R.drawable.tile000);
+                draw0(canvas);
                 drawable.setBounds(getWidth()*1/6,getHeight()*1/6,getWidth()*5/6,getHeight()*5/6);
                 break;
             case 0:

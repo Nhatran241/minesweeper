@@ -30,12 +30,12 @@ public class Grid extends GridView{
         int screen_height=metrics.heightPixels*13/14;
         if(screen_width < screen_height)
         {
-            GameEngine.WIDTH=9;
+            GameEngine.WIDTH=6;
             GameEngine.HEIGHT= (int) (GameEngine.WIDTH*((float)screen_height/(float) screen_width));
         }
         else
         {
-            GameEngine.HEIGHT=9;
+            GameEngine.HEIGHT=6;
             GameEngine.WIDTH= (int) (GameEngine.HEIGHT*((float)screen_width/(float)screen_height));
         }
     }
