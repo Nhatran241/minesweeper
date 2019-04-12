@@ -6,6 +6,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
@@ -16,18 +17,26 @@ import com.marcellelek.minesweepertutorial.GameEngine;
  */
 public class Grid extends GridView{
 
-    public Grid(Context context , AttributeSet attrs){
+    public Grid(final Context context , AttributeSet attrs){
         super(context,attrs);
-        initRation(context);
-        GameEngine.getInstance().createGrid(context);
-        setNumColumns(GameEngine.WIDTH);
-        setAdapter(new GridAdapter());
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                initRation(context);
+                GameEngine.getInstance().createGrid(context);
+                setNumColumns(GameEngine.WIDTH);
+                setAdapter(new GridAdapter());
+            }
+        });
+
     }
 
     private void initRation(Context context) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        int screen_width=metrics.widthPixels;
-        int screen_height=metrics.heightPixels*13/14;
+        int screen_width=getWidth();
+//        int screen_height=metrics.heightPixels*13/14;
+        int screen_height=getHeight();
         if(screen_width < screen_height)
         {
             GameEngine.WIDTH=6;

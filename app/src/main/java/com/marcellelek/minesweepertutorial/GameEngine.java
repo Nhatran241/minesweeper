@@ -13,7 +13,7 @@ import com.marcellelek.minesweepertutorial.views.grid.Cell;
 public class GameEngine {
     private static GameEngine instance;
 
-    public static final int BOMB_NUMBER = 10;
+    public static final int BOMB_NUMBER = 1;
     public static  int WIDTH = 0;
     public static  int HEIGHT = 0;
 

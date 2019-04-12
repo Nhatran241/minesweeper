@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.marcellelek.minesweepertutorial.GameEngine;
 import com.marcellelek.minesweepertutorial.R;
+import com.marcellelek.minesweepertutorial.util.SharedPreferencesHelper;
 
 import java.util.Random;
 
@@ -17,16 +18,19 @@ import java.util.Random;
  * Created by Marcell on 2016. 04. 14..
  */
 public class Cell extends BaseCell implements View.OnClickListener , View.OnLongClickListener{
-
-
+    private goldChange goldChange;
+    public interface goldChange{
+        void onGoldChange();
+    }
     public Cell( Context context , int x , int y ){
         super(context);
-
+        goldChange= (Cell.goldChange) context;
         setPosition(x,y);
 
         setOnClickListener(this);
         setOnLongClickListener(this);
     }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -36,7 +40,8 @@ public class Cell extends BaseCell implements View.OnClickListener , View.OnLong
     @Override
     public void onClick(View v) {
         if(isGold()&&isRevealed()&&!isFlagged()){
-            Toast.makeText(getContext(), "ádasdasdasd", Toast.LENGTH_SHORT).show();
+            SharedPreferencesHelper.setGold(getContext());
+            goldChange.onGoldChange();
             setValue(0);
             setGold(false);
             invalidate();
