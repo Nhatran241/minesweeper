@@ -3,9 +3,12 @@ package com.marcellelek.minesweepertutorial;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,15 +25,26 @@ public class MainActivity extends Activity implements Cell.goldChange,GameEngine
     TextView level;
     ProgressBar levelprogess;
     Grid gameview;
+    ImageView menu;
+    DrawerLayout drawerLayout;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main);
         gameview=findViewById(R.id.minesweeperGridView);
         gold=findViewById(R.id.tv_gold);
         level=findViewById(R.id.tv_levelnum);
         levelprogess=findViewById(R.id.progressbar1);
+        menu = findViewById(R.id.iv_menu);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(Gravity.START);
+            }
+        });
         setView();
 
     }
@@ -42,7 +56,9 @@ public class MainActivity extends Activity implements Cell.goldChange,GameEngine
     }
 
     @Override
-    public void onGoldChange() {
+    public void onGoldChange()
+    {
+        Toast.makeText(this, "asd", Toast.LENGTH_SHORT).show();
         gold.setText(SharedPreferencesHelper.getGold(this)+"");
     }
 
@@ -66,7 +82,10 @@ public class MainActivity extends Activity implements Cell.goldChange,GameEngine
                             dialog.dismiss();
                             gameview.redraw(MainActivity.this);
                         }
-                    }).show();
+                    });
+            promptDialog.setCancelable(false);
+            promptDialog.setCanceledOnTouchOutside(false);
+            promptDialog.show();
         }else {
             SharedPreferencesHelper.setEXP(this);
             setView();
@@ -82,7 +101,10 @@ public class MainActivity extends Activity implements Cell.goldChange,GameEngine
                                 dialog.dismiss();
                                 gameview.redraw(MainActivity.this);
                             }
-                        }).show();
+                        });
+                promptDialog.setCancelable(false);
+                promptDialog.setCanceledOnTouchOutside(false);
+                promptDialog.show();
             }
         }
     }
@@ -100,6 +122,9 @@ public class MainActivity extends Activity implements Cell.goldChange,GameEngine
                         dialog.dismiss();
                         gameview.redraw(MainActivity.this);
                     }
-                }).show();
+                });
+        promptDialog.setCancelable(false);
+        promptDialog.setCanceledOnTouchOutside(false);
+        promptDialog.show();
     }
 }

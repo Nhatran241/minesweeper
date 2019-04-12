@@ -8,8 +8,15 @@
         android:id="@+id/rl_top"
         android:layout_width="match_parent"
         android:layout_height="60dp">
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_left_arrow"
+            android:id="@+id/iv_menu"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
         <RelativeLayout
-
+            android:layout_toRightOf="@id/iv_menu"
             android:layout_toLeftOf="@id/rl_gold"
             android:layout_centerVertical="true"
             android:layout_width="match_parent"
