@@ -18,10 +18,14 @@ public class GameEngine {
     public static  int HEIGHT = 0;
 
     private Context context;
+    private GameStatesInterface gameStatesInterface;
 
     private Cell[][] MinesweeperGrid = new Cell[WIDTH][HEIGHT];
     private boolean isEnd=false;
-
+    public interface GameStatesInterface{
+        void OnWin();
+        void OnLose();
+    }
     public static GameEngine getInstance() {
         if( instance == null ){
             instance = new GameEngine();
@@ -34,6 +38,7 @@ public class GameEngine {
 
     public void createGrid(Context context){
         this.context = context;
+        gameStatesInterface= (GameStatesInterface) context;
         // create the grid and store it
         int[][] GeneratedGrid = Generator.generate(BOMB_NUMBER,WIDTH, HEIGHT);
         setGrid(context,GeneratedGrid);
@@ -105,7 +110,7 @@ public class GameEngine {
         }
 
         if( bombNotFound == 0 || notRevealed == 0 ){
-            Toast.makeText(context,"Game won", Toast.LENGTH_SHORT).show();
+            gameStatesInterface.OnWin();
             isEnd=true;
         }
         return false;
@@ -120,7 +125,7 @@ public class GameEngine {
 
     private void onGameLost(){
         // handle lost game
-        Toast.makeText(context,"Game lost", Toast.LENGTH_SHORT).show();
+        gameStatesInterface.OnLose();
         isEnd=true;
         for ( int x = 0 ; x < WIDTH ; x++ ) {
             for (int y = 0; y < HEIGHT; y++) {

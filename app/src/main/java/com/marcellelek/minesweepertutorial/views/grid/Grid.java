@@ -31,6 +31,11 @@ public class Grid extends GridView{
         });
 
     }
+    public void redraw(Context context){
+        GameEngine.getInstance().createGrid(context);
+        setAdapter(new GridAdapter());
+
+    }
 
     private void initRation(Context context) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
