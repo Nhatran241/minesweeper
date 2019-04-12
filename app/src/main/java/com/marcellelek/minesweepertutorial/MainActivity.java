@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.marcellelek.minesweepertutorial.util.SharedPreferencesHelper;
 import com.marcellelek.minesweepertutorial.view.Congratulation;
+import com.marcellelek.minesweepertutorial.view.PromptDialog;
 import com.marcellelek.minesweepertutorial.views.grid.Cell;
 import com.marcellelek.minesweepertutorial.views.grid.Grid;
 
@@ -53,18 +54,52 @@ public class MainActivity extends Activity implements Cell.goldChange,GameEngine
             SharedPreferencesHelper.setLevel(this);
             SharedPreferencesHelper.setEXP(this,0);
             setView();
+
+            PromptDialog promptDialog = new PromptDialog(this);
+            promptDialog.setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                    .setAnimationEnable(true)
+                    .setTitleText("Congratulation")
+                    .setContentText(getString(R.string.level))
+                    .setPositiveListener("OKE", new PromptDialog.OnPositiveListener() {
+                        @Override
+                        public void onClick(PromptDialog dialog) {
+                            dialog.dismiss();
+                            gameview.redraw(MainActivity.this);
+                        }
+                    }).show();
         }else {
             SharedPreferencesHelper.setEXP(this);
             setView();
-        }
-        if(gameview!=null){
-            Congratulation congratulation = new Congratulation(this,true,gameview.getWidth()/2,gameview.getHeight()/2);
-            congratulation.show();
+            if (gameview != null) {
+                PromptDialog promptDialog = new PromptDialog(this);
+                promptDialog.setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                        .setAnimationEnable(true)
+                        .setTitleText("Congratulation")
+                        .setContentText(getString(R.string.win))
+                        .setPositiveListener("OKE", new PromptDialog.OnPositiveListener() {
+                            @Override
+                            public void onClick(PromptDialog dialog) {
+                                dialog.dismiss();
+                                gameview.redraw(MainActivity.this);
+                            }
+                        }).show();
+            }
         }
     }
 
     @Override
     public void OnLose() {
-
+        PromptDialog promptDialog = new PromptDialog(this);
+        promptDialog.setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                .setAnimationEnable(true)
+                .setTitleText("Game Over")
+                .setContentText(getString(R.string.lose))
+                .setPositiveListener("OKE", new PromptDialog.OnPositiveListener() {
+                    @Override
+                    public void onClick(PromptDialog dialog) {
+                        dialog.dismiss();
+                        gameview.redraw(MainActivity.this);
+                    }
+                }).show();
     }
 }
