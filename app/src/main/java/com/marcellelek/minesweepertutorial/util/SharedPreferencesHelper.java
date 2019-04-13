@@ -51,5 +51,16 @@ public class SharedPreferencesHelper {
                 .getInt("Level",1);
     }
 
+    public static void setLock(Context context,String lock){
+        ensureNotNull(context);
+        context.getSharedPreferences(name,Context.MODE_PRIVATE)
+                .edit().putBoolean(lock,false).apply();
+    }
+    public static boolean getLock(Context context,String lock){
+        ensureNotNull(context);
+        return context.getSharedPreferences(name,Context.MODE_PRIVATE)
+                .getBoolean(lock,true);
+    }
+
 
 }

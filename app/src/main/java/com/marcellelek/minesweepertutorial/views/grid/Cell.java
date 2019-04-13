@@ -48,6 +48,8 @@ public class Cell extends BaseCell implements View.OnClickListener , View.OnLong
         }
         if(!isFlagged()) {
             GameEngine.getInstance().click(getXPos(), getYPos());
+        }else {
+            GameEngine.getInstance().flag(getXPos(),getYPos());
         }
     }
 

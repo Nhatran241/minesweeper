@@ -12,16 +12,17 @@ import com.marcellelek.minesweepertutorial.views.grid.Cell;
  */
 public class GameEngine {
     private static GameEngine instance;
+    public static int LEVEL=1;
 
-    public static final int BOMB_NUMBER = 1;
-    public static  int WIDTH = 0;
-    public static  int HEIGHT = 0;
+    public static int BOMB_NUMBER = 1;
+    public static  int WIDTH = 6;
+    public static  int HEIGHT = 6;
 
     private Context context;
     private GameStatesInterface gameStatesInterface;
 
     private Cell[][] MinesweeperGrid = new Cell[WIDTH][HEIGHT];
-    private boolean isEnd=false;
+    public static int isEnd=1;
     public interface GameStatesInterface{
         void OnWin();
         void OnLose();
@@ -41,6 +42,7 @@ public class GameEngine {
         gameStatesInterface= (GameStatesInterface) context;
         // create the grid and store it
         int[][] GeneratedGrid = Generator.generate(BOMB_NUMBER,WIDTH, HEIGHT);
+        MinesweeperGrid= new Cell[WIDTH][HEIGHT];
         setGrid(context,GeneratedGrid);
 
     }
@@ -86,21 +88,45 @@ public class GameEngine {
                 }
                 if (getCellAt(x, y).isBomb()) {
                     onGameLost();
+                    return;
                 }
         }else {
         }
-        if(!isEnd) {
+        if(isEnd==1) {
             checkEnd();
         }
     }
 
     private boolean checkEnd(){
+//        Log.d("checkend", "checkEnd: ");
+//        int notRevealed = WIDTH * HEIGHT;
+//        for ( int x = 0 ; x < WIDTH ; x++ ){
+//            for( int y = 0 ; y < HEIGHT ; y++ ){
+//                if( getCellAt(x,y).isRevealed()){
+//                    notRevealed--;
+//                }
+//
+//                if( getCellAt(x,y).isFlagged() && getCellAt(x,y).isBomb() ){
+//                    notRevealed--;
+//                }
+//            }
+//        }
+//
+//        if(notRevealed == 0 ){
+//            Log.d("checkend", "win: ");
+//            gameStatesInterface.OnWin();
+//        }
+//        return false;
         int bombNotFound = BOMB_NUMBER;
-        int notRevealed = WIDTH * HEIGHT;
+        int notRevealed = (WIDTH * HEIGHT)-bombNotFound;
+        int notRea=(WIDTH*HEIGHT);
         for ( int x = 0 ; x < WIDTH ; x++ ){
             for( int y = 0 ; y < HEIGHT ; y++ ){
-                if( getCellAt(x,y).isRevealed() || getCellAt(x,y).isFlagged() ){
+//                if( getCellAt(x,y).isRevealed() || getCellAt(x,y).isFlagged() ) {
+
+                if( getCellAt(x,y).isRevealed()){
                     notRevealed--;
+                    notRea--;
                 }
 
                 if( getCellAt(x,y).isFlagged() && getCellAt(x,y).isBomb() ){
@@ -108,25 +134,30 @@ public class GameEngine {
                 }
             }
         }
-
-        if( bombNotFound == 0 || notRevealed == 0 ){
+        if( notRea==BOMB_NUMBER ){
+                gameStatesInterface.OnWin();
+                isEnd = 2;
+            return false;
+        }
+        if( bombNotFound == 0 && notRevealed == 0 ){
             gameStatesInterface.OnWin();
-            isEnd=true;
+            isEnd=2;
         }
         return false;
     }
 
     public void flag( int x , int y ){
-        boolean isFlagged = getCellAt(x,y).isFlagged();
-        getCellAt(x,y).setFlagged(!isFlagged);
-        getCellAt(x,y).invalidate();
-        checkEnd();
+        if(!getCellAt(x,y).isRevealed()) {
+            boolean isFlagged = getCellAt(x, y).isFlagged();
+            getCellAt(x, y).setFlagged(!isFlagged);
+            getCellAt(x, y).invalidate();
+            checkEnd();
+        }
     }
 
     private void onGameLost(){
         // handle lost game
         gameStatesInterface.OnLose();
-        isEnd=true;
         for ( int x = 0 ; x < WIDTH ; x++ ) {
             for (int y = 0; y < HEIGHT; y++) {
                 if(!getCellAt(x,y).isGold()) {

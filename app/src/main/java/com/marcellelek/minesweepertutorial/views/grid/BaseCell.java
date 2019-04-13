@@ -88,6 +88,7 @@ public abstract class BaseCell extends View {
 
             this.isClicked = true;
             this.isRevealed = true;
+            this.isFlagged=false;
 
             invalidate();
     }

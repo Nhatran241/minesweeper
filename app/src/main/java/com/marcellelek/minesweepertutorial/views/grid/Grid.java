@@ -16,7 +16,6 @@ import com.marcellelek.minesweepertutorial.GameEngine;
  * Created by Marcell on 2016. 04. 14..
  */
 public class Grid extends GridView{
-
     public Grid(final Context context , AttributeSet attrs){
         super(context,attrs);
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -32,10 +31,13 @@ public class Grid extends GridView{
 
     }
     public void redraw(Context context){
+        initRation(context);
         GameEngine.getInstance().createGrid(context);
+        setNumColumns(GameEngine.WIDTH);
         setAdapter(new GridAdapter());
 
     }
+
 
     private void initRation(Context context) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -44,13 +46,13 @@ public class Grid extends GridView{
         int screen_height=getHeight();
         if(screen_width < screen_height)
         {
-            GameEngine.WIDTH=6;
             GameEngine.HEIGHT= (int) (GameEngine.WIDTH*((float)screen_height/(float) screen_width));
+//            GameEngine.BOMB_NUMBER=(int) (((GameEngine.WIDTH*GameEngine.HEIGHT)+GameEngine.LEVEL*10)*10)/100;
         }
         else
         {
-            GameEngine.HEIGHT=6;
             GameEngine.WIDTH= (int) (GameEngine.HEIGHT*((float)screen_width/(float)screen_height));
+            GameEngine.BOMB_NUMBER=(int) (((GameEngine.WIDTH*GameEngine.HEIGHT)+GameEngine.LEVEL*10)*10)/100;
         }
     }
 
