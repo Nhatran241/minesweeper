@@ -39,16 +39,18 @@ public class PromptDialog extends Dialog {
     public static final int DIALOG_TYPE_WRONG   = 2;
     public static final int DIALOG_TYPE_SUCCESS = 3;
     public static final int DIALOG_TYPE_WARNING = 4;
+    public static final int DIALOG_TYPE_UNLOCK = 5;
     public static final int DIALOG_TYPE_DEFAULT = DIALOG_TYPE_INFO;
 
     private AnimationSet mAnimIn, mAnimOut;
     private View mDialogView;
-    private TextView mTitleTv, mContentTv, mPositiveBtn;
+    private TextView mTitleTv, mContentTv, mPositiveBtn,mNe;
     private OnPositiveListener mOnPositiveListener;
+    private OnNeListener mOnNeListener;
 
     private int mDialogType;
     private boolean mIsShowAnim;
-    private CharSequence mTitle, mContent, mBtnText;
+    private CharSequence mTitle, mContent, mBtnText,mBtnNe;
 
     public PromptDialog(Context context) {
         this(context, 0);
@@ -57,6 +59,7 @@ public class PromptDialog extends Dialog {
     public PromptDialog(Context context, int theme) {
         super(context, R.style.color_dialog);
         init();
+
     }
 
     private void init() {
@@ -84,6 +87,8 @@ public class PromptDialog extends Dialog {
         mTitleTv = (TextView) contentView.findViewById(R.id.tvTitle);
         mContentTv = (TextView) contentView.findViewById(R.id.tvContent);
         mPositiveBtn = (TextView) contentView.findViewById(R.id.btnPositive);
+        mNe = (TextView) contentView.findViewById(R.id.btnNe);
+
 
         View llBtnGroup = findViewById(R.id.llBtnGroup);
         ImageView logoIv = (ImageView) contentView.findViewById(R.id.logoIv);
@@ -95,6 +100,7 @@ public class PromptDialog extends Dialog {
         triangleIv.setImageBitmap(createTriangel((int) (DisplayUtil.getScreenSize(getContext()).x * 0.7), DisplayUtil.dp2px(getContext(), 10)));
         topLayout.addView(triangleIv);
 
+        setBtnBackground(mNe);
         setBtnBackground(mPositiveBtn);
         setBottomCorners(llBtnGroup);
 
@@ -111,6 +117,10 @@ public class PromptDialog extends Dialog {
         mTitleTv.setText(mTitle);
         mContentTv.setText(mContent);
         mPositiveBtn.setText(mBtnText);
+        if(mBtnNe==null){
+            mNe.setVisibility(View.GONE);
+        }
+        mNe.setText(mBtnNe);
     }
 
     private void resizeDialog() {
@@ -241,6 +251,14 @@ public class PromptDialog extends Dialog {
                 }
             }
         });
+        mNe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnNeListener != null) {
+                    mOnNeListener.onClick(PromptDialog.this);
+                }
+            }
+        });
 
         initAnimListener();
     }
@@ -362,6 +380,20 @@ public class PromptDialog extends Dialog {
         return this;
     }
 
+    public PromptDialog setNeListener(CharSequence btnText, OnNeListener l) {
+        mBtnNe = btnText;
+        return setNeListener(l);
+    }
+
+    public PromptDialog setNeListener(int stringResId, OnNeListener l) {
+        return setNeListener(getContext().getString(stringResId), l);
+    }
+
+    public PromptDialog setNeListener(OnNeListener l) {
+        mOnNeListener = l;
+        return this;
+    }
+
     public PromptDialog setAnimationIn(AnimationSet animIn) {
         mAnimIn = animIn;
         return this;
@@ -374,6 +406,9 @@ public class PromptDialog extends Dialog {
     }
 
     public interface OnPositiveListener {
+        void onClick(PromptDialog dialog);
+    }
+    public interface OnNeListener {
         void onClick(PromptDialog dialog);
     }
 

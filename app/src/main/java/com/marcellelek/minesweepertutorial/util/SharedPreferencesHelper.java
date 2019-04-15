@@ -18,6 +18,12 @@ public class SharedPreferencesHelper {
         context.getSharedPreferences(name,Context.MODE_PRIVATE)
                 .edit().putInt("Gold",getGold(context)+1).apply();
     }
+    public static void setGold(Context context,int num){
+        ensureNotNull(context);
+        context.getSharedPreferences(name,Context.MODE_PRIVATE)
+                .edit().putInt("Gold",num).apply();
+    }
+
 
     public static int getGold(Context context){
         ensureNotNull(context);

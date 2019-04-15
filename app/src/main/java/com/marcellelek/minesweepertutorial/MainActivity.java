@@ -278,6 +278,41 @@ public class MainActivity extends Activity implements Cell.goldChange,GameEngine
         });
         promptDialog.show();
     }
+    public void UnLockDialog(final int level){
+        PromptDialog promptDialog = new PromptDialog(this);
+        promptDialog.setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                .setAnimationEnable(true)
+                .setTitleText("You need to reach level "+level+" to unlock this or you can unlock with "+level*5+" gold")
+                .setContentText(getString(R.string.lose))
+                .setPositiveListener("Cancel", new PromptDialog.OnPositiveListener() {
+                    @Override
+                    public void onClick(PromptDialog dialog) {
+                       dialog.dismiss();
+                    }
+                });
+
+        if(SharedPreferencesHelper.getGold(this)>=level*5){
+            promptDialog.setNeListener("Oke", new PromptDialog.OnNeListener() {
+                @Override
+                public void onClick(PromptDialog dialog) {
+                    dialog.dismiss();
+                    SharedPreferencesHelper.setLock(MainActivity.this,"lock"+level);
+                    SharedPreferencesHelper.setGold(MainActivity.this,(SharedPreferencesHelper.getGold(MainActivity.this)-(level*5)));
+                    onGoldChange();
+                    setDrawerView();
+                }
+            });
+        }
+        promptDialog.setCancelable(false);
+        promptDialog.setCanceledOnTouchOutside(false);
+        promptDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                GameEngine.isEnd=1;
+            }
+        });
+        promptDialog.show();
+    }
 
     @Override
     public void onClick(View v) {
@@ -289,57 +324,101 @@ public class MainActivity extends Activity implements Cell.goldChange,GameEngine
                 break;
             }
             case R.id.rl_lv2:{
-                GameEngine.WIDTH=7;
-                GameEngine.LEVEL=2;
-                gameview.redraw(this);
+                if(!SharedPreferencesHelper.getLock(this,"lock2")){
+                    GameEngine.WIDTH=7;
+                    GameEngine.LEVEL=2;
+                    gameview.redraw(this);
+                }else {
+                    UnLockDialog(2);
+                }
                 break;
             }
             case R.id.rl_lv3:{
-                GameEngine.WIDTH=8;
-                GameEngine.LEVEL=3;
-                gameview.redraw(this);
+                if(!SharedPreferencesHelper.getLock(this,"lock3")){
+                    GameEngine.WIDTH=8;
+                    GameEngine.LEVEL=3;
+                    gameview.redraw(this);
+                }else {
+                    UnLockDialog(3);
+                }
+
                 break;
             }
             case R.id.rl_lv4:{
-                GameEngine.WIDTH=9;
-                GameEngine.LEVEL=4;
-                gameview.redraw(this);
+                if(!SharedPreferencesHelper.getLock(this,"lock4")){
+                    GameEngine.WIDTH=9;
+                    GameEngine.LEVEL=4;
+                    gameview.redraw(this);
+                }else {
+                    UnLockDialog(4);
+                }
+
                 break;
             }
             case R.id.rl_lv5:{
-                GameEngine.WIDTH=10;
-                GameEngine.LEVEL=5;
-                gameview.redraw(this);
+                if(!SharedPreferencesHelper.getLock(this,"lock5")){
+                    GameEngine.WIDTH=10;
+                    GameEngine.LEVEL=5;
+                    gameview.redraw(this);
+                }else {
+                    UnLockDialog(5);
+                }
+
                 break;
             }
             case R.id.rl_lv6:{
-                GameEngine.WIDTH=11;
-                GameEngine.LEVEL=6;
-                gameview.redraw(this);
+                if(!SharedPreferencesHelper.getLock(this,"lock6")){
+                    GameEngine.WIDTH=11;
+                    GameEngine.LEVEL=6;
+                    gameview.redraw(this);
+                }else {
+                    UnLockDialog(6);
+                }
+
                 break;
             }
             case R.id.rl_lv7:{
-                GameEngine.WIDTH=12;
-                GameEngine.LEVEL=7;
-                gameview.redraw(this);
+                if(!SharedPreferencesHelper.getLock(this,"lock7")){
+                    GameEngine.WIDTH=12;
+                    GameEngine.LEVEL=7;
+                    gameview.redraw(this);
+                }else {
+                    UnLockDialog(7);
+                }
+
                 break;
             }
             case R.id.rl_lv8:{
-                GameEngine.WIDTH=13;
-                GameEngine.LEVEL=8;
-                gameview.redraw(this);
+                if(!SharedPreferencesHelper.getLock(this,"lock8")){
+                    GameEngine.WIDTH=13;
+                    GameEngine.LEVEL=8;
+                    gameview.redraw(this);
+                }else {
+                    UnLockDialog(8);
+                }
+
                 break;
             }
             case R.id.rl_lv9:{
-                GameEngine.WIDTH=14;
-                GameEngine.LEVEL=9;
-                gameview.redraw(this);
+                if(!SharedPreferencesHelper.getLock(this,"lock9")){
+                    GameEngine.WIDTH=14;
+                    GameEngine.LEVEL=9;
+                    gameview.redraw(this);
+                }else {
+                    UnLockDialog(9);
+                }
+
                 break;
             }
             case R.id.rl_lv10:{
-                GameEngine.WIDTH=15;
-                GameEngine.LEVEL=10;
-                gameview.redraw(this);
+                if(!SharedPreferencesHelper.getLock(this,"lock10")){
+                    GameEngine.WIDTH=15;
+                    GameEngine.LEVEL=10;
+                    gameview.redraw(this);
+                }else {
+                    UnLockDialog(10);
+                }
+
                 break;
             }
 
